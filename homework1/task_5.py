@@ -14,16 +14,13 @@ def count_find_num(primesL, limit):
     if min_mul > limit:
         return res
     while i <= min_mul:
-        #arr = comb(primesL, i)
-        some_set.add(reduce(mul, list(comb(primesL, i))))
-        #for el in arr:
-        #    some_set.add(reduce(mul, el))
+        arr = comb(primesL, i)
+        for el in arr:
+            some_set.add(reduce(mul, el) * min_mul)
         i += 1
     for el in some_set:
-        temp_mul = el * min_mul
-        #if temp_mul <= limit:
-        if temp_mul <= limit:
-            max_mul = max(temp_mul, max_mul)
+        if el <= limit:
+            max_mul = max(el, max_mul)
             count +=1
     res.append(count)
     res.append(max_mul)
