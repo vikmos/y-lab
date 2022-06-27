@@ -1,19 +1,51 @@
-import math as m 
+from itertools import combinations_with_replacement as comb
+from functools import reduce
+from operator import mul
 
-a = 60
-prime_factors = [2,3,5]
 
-exponents =list(map(lambda x:m.floor(m.log(a,x)),prime_factors))
-rez = []
-count = 0
-max_prime = 0
-for i in range(exponents[0]+1):
-    for j in range(exponents[1]+1):
-        for k in range(exponents[2]+1):
-            prime = 2 ** i * 3 ** j * 5 ** k
-            if prime <= a:
-                count += 1
-                max_prime = max(max_prime, prime)
-rez.append(count)
-rez.append(max_prime)
-print(rez)
+def count_find_num(primesL, limit):
+    min_mul = reduce(mul, primesL)
+    max_mul = min_mul
+    count = 1
+    i = 1 
+    arr = []
+    some_set = set()
+    res = []
+    if min_mul > limit:
+        return res
+    while i <= min_mul:
+        #arr = comb(primesL, i)
+        some_set.add(reduce(mul, list(comb(primesL, i))))
+        #for el in arr:
+        #    some_set.add(reduce(mul, el))
+        i += 1
+    for el in some_set:
+        temp_mul = el * min_mul
+        #if temp_mul <= limit:
+        if temp_mul <= limit:
+            max_mul = max(temp_mul, max_mul)
+            count +=1
+    res.append(count)
+    res.append(max_mul)
+    return res
+
+primesL = [2, 3]
+limit = 200
+assert count_find_num(primesL, limit) == [13, 192]
+
+primesL = [2, 5]
+limit = 200
+assert count_find_num(primesL, limit) == [8, 200]
+
+primesL = [2, 3, 5]
+limit = 500
+assert count_find_num(primesL, limit) == [12, 480]
+
+primesL = [2, 3, 5]
+limit = 1000
+assert count_find_num(primesL, limit) == [19, 960]
+
+primesL = [2, 3, 47]
+limit = 200
+assert count_find_num(primesL, limit) == []
+
