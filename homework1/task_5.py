@@ -1,3 +1,7 @@
+""" Написать метод count_find_num, который принимает на вход список простых 
+    множителей (primesL) и целое число, предел (limit), после чего попробуйте 
+    сгенерировать по порядку все числа. Меньшие значения предела, которые 
+    имеют все и только простые множители простых чисел primesL. """
 from itertools import combinations_with_replacement as comb
 from functools import reduce
 from operator import mul
@@ -5,23 +9,24 @@ from operator import mul
 
 def count_find_num(primesL, limit):
     min_mul = reduce(mul, primesL)
+    step = limit // min_mul
     max_mul = min_mul
     count = 1
-    i = 1 
-    arr = []
-    some_set = set()
+    i = 1
     res = []
     if min_mul > limit:
         return res
-    while i <= min_mul:
+    flag = True
+    while flag:
+        flag = False
         arr = comb(primesL, i)
         for el in arr:
-            some_set.add(reduce(mul, el) * min_mul)
+            temp_mul = reduce(mul, el)
+            if temp_mul <= step:
+                max_mul = max(temp_mul * min_mul, max_mul)
+                count += 1
+                flag = True
         i += 1
-    for el in some_set:
-        if el <= limit:
-            max_mul = max(el, max_mul)
-            count +=1
     res.append(count)
     res.append(max_mul)
     return res
