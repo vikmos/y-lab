@@ -1,11 +1,14 @@
 """" Разработать программу для вычисления кратчайшего пути для почтальона. """
-import ast
+
+#import ast
+
 
 def get_point_cordinats()-> list[tuple]:
     """ Entering dots """
     points = []
+    print("Enter two digits with coma. For escape press 'Enter'!")
     while True:
-        s = input("Enter two digits with coma: ")
+        s = input()
         if len(s) == 0:
             break
         else:
@@ -23,7 +26,6 @@ def get_space_between_dots(point_1: tuple, point_2: tuple)-> float:
 
 def main():
     arr = get_point_cordinats()
-    print(len(arr))
     for i in range(len(arr) - 1):
         print(get_space_between_dots(arr[i], arr[i+1]))
 
