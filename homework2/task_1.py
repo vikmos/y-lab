@@ -1,4 +1,5 @@
-"""" Разработать программу для вычисления кратчайшего пути для почтальона. """
+""" Разработать программу для вычисления кратчайшего пути
+    для почтальона. """
 
 from math import sqrt
 from itertools import permutations as pr
@@ -31,54 +32,31 @@ def get_space_between_dots(point_1: tuple, point_2: tuple)-> float:
     return res
 
 
-def create_matrix(size: int, data_list: list[tuple]) -> list[list]:
-    """ Creating matrix with distance to all cities """
-    matrix = []
-    for i in range(size):
-        row_list = []
-        for j in range(size):
-            if i != j:
-                row_list.append(sqrt(get_space_between_dots(data_list[i],\
-                        data_list[j])))
-            else:
-                row_list.append(float('inf'))
-        matrix.append(row_list)
-    return matrix
-
-
 def main():
     arr = get_point_cordinats()
     n = len(arr)
-    matrix = create_matrix(n, arr)
     min_distance = float('inf')
-    
-    for el in matrix:
-        print(el)
-    
-    print("-----------------------------------------------------------------")
     res = pr(arr[1:])
     route = []   
     for el in res:
-        temp_route =[] 
+        temp_route ="" 
         temp_distance = 0
         temp_distance += get_space_between_dots(arr[0], el[0])
-        temp_route += (arr[0], el[0], temp_distance)
+        temp_route += f"{arr[0]} -> {el[0]}[{temp_distance}] \n"
         for i in range(len(el)):
             if i == len(el)-1:
                 temp_distance += get_space_between_dots(el[-1], arr[0])
-                temp_route += (el[-1], arr[0], temp_distance)
+                temp_route += f"{el[-1]} -> {arr[0]}[{temp_distance}]"
             else:
                 temp_distance += get_space_between_dots(el[i], el[i+1])
-                temp_route += (el[i], el[i+1], temp_distance)
-                print(el[i], el[i+1], temp_distance, sep="->")
+                temp_route += f"{el[i]} -> {el[i+1]}[{temp_distance}] \n"
         if min_distance >= temp_distance:
             min_distance = temp_distance
             route = temp_route
-    print(route, min_distance, sep="->")
+    print(route)
+    print(f"Minimum distnce is {min_distance}")
 
 
 if __name__ == "__main__":
     main()
-
-
 
