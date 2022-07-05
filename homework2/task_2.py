@@ -2,12 +2,29 @@
 Игра должна работать в режиме «человек против компьютера». """
 
 from tkinter import *
+import tkinter.messagebox as mb
+from turtle import position
+
+
+def show_warning():
+    msg = "Сюда жать нельзя"
+    mb.showwarning("Предупреждения", msg)
+
+def update_label_text(event, label):
+    if label['text'] == '':
+        label['text'] = 'X'
+        print(label.winfo_name())
+        #label.nametowidget('01')["text"] = "O"
+    else:
+        show_warning()
 
 
 window = Tk()
 
 window.title("Reverce X-O")
-window.geometry('240x270')
+window.geometry('220x230')
+
+
 
 for i in range(10):
     for j in range(10):
@@ -16,9 +33,9 @@ for i in range(10):
             relief = RAISED,
             borderwidth = 1
         )
-        frame.grid(row=i, column=j, padx=1, pady=1)
-        label = Label(master=frame, width=2, height=1)
-        label.pack(padx=1, pady=1)
-
+        frame.grid(row=i, column=j)
+        label = Label(master=frame, width=2, height=1, name=f"{i}-{j}")
+        label.bind('<Button-1>', lambda event, label=label: update_label_text(event, label))
+        label.pack()
 window.mainloop()
 
